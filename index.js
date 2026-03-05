@@ -1,9 +1,10 @@
 const express = require('express')
 const server = express()
+const data = require('./data.json')
 
 server.get('/', (req, res) =>{
 console.log(req);
-res.send('Api Tienda')
+res.json(data)
 })
 
 server.listen(3000, ()=>{

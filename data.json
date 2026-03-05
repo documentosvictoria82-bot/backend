@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "titulo": "Producto 1",
+        "Precio": "20000",
+        "Descripcion": "Se describe la utilidad del producto",
+        "Categoria": "Ropa deportiva",
+        "Imagen": "aaa",
+        "Calificacion": {
+            "Puntuacion": 4.2,
+            "Cantidad": 10
+        }
+    }
+]
