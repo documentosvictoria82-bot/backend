@@ -1,29 +1,44 @@
 //const data = require('../../data.json')
+const { ObjectId } = require('mongodb');
 const { conectar_a_Mongo, desconectado_de_Mongo } = require('../config/indexconf'); 
 
-class productos_modelo{
+class producModelo{
     static async getAll(){
-        let Cliente_Mongo;
-try {
+       try {
    const Cliente_Mongo = await conectar_a_Mongo();
    if (!Cliente_Mongo){
     throw Error('Error al conectar con Mongo');
    } 
-  const resultado = await Cliente_Mongo.db('proyectoTienda').collection('productos').find().toArray();
+  const result = await Cliente_Mongo.db('proyectoTienda').collection('productos').find().toArray();
   
-  await desconectado_de_Mongo(Cliente_Mongo);
+  await desconectado_de_Mongo();
   
-  console.log("Datos de Mongo:", resultado.length);
+  console.log(result);
   
-  return {data:resultado,error: false};
+  if (!result) return {data: null, error: true}
+    return {data:result, error: false};
 
 } catch (error) {
-    console.log("error del modelo", error.message);
-    if (Cliente_Mongo) await desconectado_de_Mongo(Cliente_Mongo);
-    return {data:null, error}
-}
-      
+        return error
+}      
+    }
+    static async getByID(id){
+       let Cliente_Mongo;
+        try {
+            const Cliente_Mongo = await conectar_a_Mongo()
+            if (!Cliente_Mongo) {
+                throw Error ('Error al conectar a MongoDB')
+            }
+            const result = await Cliente_Mongo.db('proyectoTienda').collection('productos').findOne({_id: new ObjectId(id)})
+            console.log(result);
+            await desconectado_de_Mongo(Cliente_Mongo)
+            if(!result) return {data: null, error: true}
+            return {data: result, error:false}
+
+        } catch (error) {
+            return {data: null, error: true}
+        }
     }
 }
 
-module.exports = productos_modelo
+module.exports = producModelo

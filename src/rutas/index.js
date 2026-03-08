@@ -4,6 +4,8 @@ const productos = require('../controlador/index')
 
 
 ruta.get('/producto', productos.getAll)
+ruta.get('/producto/:id', productos.getByID)
+
 //ruta.post('/productos', ()=>{
 //    res.send(".")
 //})
