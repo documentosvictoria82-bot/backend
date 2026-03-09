@@ -30,7 +30,6 @@ class producModelo{
                 throw Error ('Error al conectar a MongoDB')
             }
             const result = await Cliente_Mongo.db('proyectoTienda').collection('productos').findOne({_id: new ObjectId(id)})
-            console.log(result);
             await desconectado_de_Mongo(Cliente_Mongo)
             if(!result) return {data: null, error: true}
             return {data: result, error:false}
@@ -39,6 +38,24 @@ class producModelo{
             return {data: null, error: true}
         }
     }
+static async createOne(body){
+    try {
+        const Cliente_Mongo = await conectar_a_Mongo();
+        if(!Cliente_Mongo){
+            throw Error('Error al conectar a Mongo');
+        }
+        const insert = await Cliente_Mongo.db('proyectoTienda').collection('productos').insertOne(body)
+       console.log(insert);
+        if(useInsertionEffect.acknowledged) return{data: {...body, _id: insert.insertedId}, error: false}
+        return {data: null, error: true}
+        // await desconectado_de_Mongo(Cliente_Mongo);
+       // console.log("Resultado insertado", insert);
+       // return insert;
+    } catch (error) {
+       // console.log(error);
+        return {data: null, error: true}    ;
+    }
+}
 }
 
 module.exports = producModelo

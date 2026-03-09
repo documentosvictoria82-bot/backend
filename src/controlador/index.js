@@ -1,6 +1,8 @@
 const { ObjectId } = require('mongodb')
 const productosModel = require('../modelo/indexmo')
 
+const product = require('../modelo/Esquema_producto')
+
 class producto{
     static async getAll(req, res){
         const {data, error} = await productosModel.getAll()
@@ -17,6 +19,22 @@ class producto{
        error ? res.status(400).json({error: "no existe el producto"})
        : res.status(200).json(data)
     }
+static async createOne(req, res){
+    const body = req.body
+    console.log(body);
+    
+    try {
+        const producto1 = product.parse(body)
+        const {data, error} = await productosModel.createOne(producto1)
+        if (data) return res.status(200).json(data)       
+    } catch (error) {
+        res.status(400).json({error: 'los datos enviados son incorrectos'+ error.errors})
+    }
+    
+    //console.log(producto1);
+       
+}
+
 }
 
 module.exports = producto
