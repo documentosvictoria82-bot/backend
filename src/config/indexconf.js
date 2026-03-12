@@ -1,38 +1,20 @@
-const dotenv = require('dotenv')
+const mongoose = require("mongoose")
+const { config } = require("dotenv")
 
-dotenv.config()
+config()
 
-const {MongoClient} = require('mongodb')
+const conectar = async () => {
+    try {
 
-async function conectar_a_Mongo(){
+        await mongoose.connect(process.env.MONGOURL)
 
-
-try {const cliente = new MongoClient(process.env.MONGOURL)
-     await cliente.connect()
-     console.log("conectado a Mongo")
-       return cliente
-
-    } catch (error) {
-      console.log("Error al intentar conectar con Mongo")
-      return null
-
-    }
-
-   }
-
-   async function  desconectado_de_Mongo(){
-   try { const cliente = new MongoClient(process.env.MONGOURL)
-    await cliente.close()
-          console.log("Desconectado de Mongo");
+        console.log("Conexión a la base de datos exitosa")
 
     } catch (error) {
 
-       console.log("Error al desconectar Mongo", error);
+        console.log("No se pudo conectar a la base de datos", error)
 
     }
+}
 
-   }
-
-
-
-module.exports = {conectar_a_Mongo, desconectado_de_Mongo}
+module.exports = { conectar }
